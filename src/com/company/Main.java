@@ -51,11 +51,9 @@ public class Main {
                     break;
                 case "/save":
                     saveFile();
-                    System.out.println("File Saved.");
                     break;
                 case "/load":
                     loadFile();
-                    System.out.println("File Loaded.");
                     break;
                 case "/change current level":
                     System.out.println("What is your current level?");
@@ -99,6 +97,7 @@ public class Main {
             FileWriter fw = new FileWriter(f);
             fw.write(json);
             fw.close();
+            System.out.println("File Saved.");
         }catch (Exception e) {
             System.out.println("Couldn't save to file!");
         }
@@ -112,6 +111,7 @@ public class Main {
             fr.read(contents, 0, fileSize);
             JsonParser parser = new JsonParser();
             levelingService = parser.parse(contents, LevelingService.class);
+            System.out.println("File Loaded.");
         } catch (Exception e) {
             System.out.println("Couldn't load file!");
         }
