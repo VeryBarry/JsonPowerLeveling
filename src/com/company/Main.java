@@ -1,12 +1,12 @@
 package com.company;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -37,13 +37,16 @@ public class Main {
         String answer = scanner.nextLine();
         switch(answer){
             case "yes":
-
+                levelingService.setMount(true);
                 break;
             case "no":
-
+                levelingService.setMount(false);
                 break;
         }
-
+        Double cost = Math.random();
+        cost = cost * 1000;
+        String costInUSD = String.format("%.2f",cost);
+        System.out.printf("Ok, the total for your order is $%s\n", costInUSD);
 
         boolean keepRunning = true;
 
