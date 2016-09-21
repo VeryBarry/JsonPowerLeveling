@@ -1,5 +1,6 @@
 package com.company;
 
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
 
@@ -8,30 +9,50 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
 
-
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     static final String FILE_NAME = "SaveFile.json";
     static LevelingService levelingService = new LevelingService();
 
-
     public static void main(String[] args) {
 
+        System.out.println("Welcome to the not so freebie leveling service.");
+        System.out.println("To start we need some details");
+        System.out.println("First off, what server are you on?");
+        String firstServer = scanner.nextLine();
+        levelingService.setPlayerServer(firstServer);
+        System.out.println("Now I need your player class.");
+        String firstClass = scanner.nextLine();
+        levelingService.setPlayerClass(firstClass);
+        System.out.println("What about your current level?");
+        String firstCurrentLevel = scanner.nextLine();
+        int intOfFirstCurrentLevel = Integer.valueOf(firstCurrentLevel);
+        levelingService.setCurrentLevel(intOfFirstCurrentLevel);
+        System.out.println("What level do you want to be?");
+        String firstDesiredLevel = scanner.nextLine();
+        int intOfFirstDesiredLevel = Integer.valueOf(firstDesiredLevel);
+        levelingService.setDesiredLevel(intOfFirstDesiredLevel);
+        System.out.println("Finally, do you want us to get you a mount? yes or no");
+        String answer = scanner.nextLine();
+        switch(answer){
+            case "yes":
+
+                break;
+            case "no":
+
+                break;
+        }
 
 
         boolean keepRunning = true;
 
-
         while(keepRunning = true) {
-            System.out.println("Welcome to the not so freebie leveling service.");
             System.out.println("watchu want foo?");
             String command = commandSystem();
             if(command == "/exit"){
                 keepRunning = false;
             }
-
-
         }
     }
     static String commandSystem(){

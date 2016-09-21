@@ -9,9 +9,18 @@ public class LevelingService {
     double cost;
     String playerClass;
     String playerServer;
+    boolean mount;
     
     LevelingService(){
         
+    }
+
+    public boolean isMount() {
+        return mount;
+    }
+
+    public void setMount(boolean mount) {
+        this.mount = mount;
     }
 
     public int getCurrentLevel() {
