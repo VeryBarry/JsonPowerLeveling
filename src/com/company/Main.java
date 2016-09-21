@@ -6,47 +6,56 @@ import jodd.json.JsonSerializer;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
-    static final String FILE_NAME = "SaveFile.json";
+    static final String FILE_NAME = "SaveGame.json";
     static LevelingService levelingService = new LevelingService();
 
     public static void main(String[] args) {
 
         System.out.println("Welcome to the not so freebie leveling service.");
-        System.out.println("To start we need some details");
-        System.out.println("First off, what server are you on?");
-        String firstServer = scanner.nextLine();
-        levelingService.setPlayerServer(firstServer);
-        System.out.println("Now I need your player class.");
-        String firstClass = scanner.nextLine();
-        levelingService.setPlayerClass(firstClass);
-        System.out.println("What about your current level?");
-        String firstCurrentLevel = scanner.nextLine();
-        int intOfFirstCurrentLevel = Integer.valueOf(firstCurrentLevel);
-        levelingService.setCurrentLevel(intOfFirstCurrentLevel);
-        System.out.println("What level do you want to be?");
-        String firstDesiredLevel = scanner.nextLine();
-        int intOfFirstDesiredLevel = Integer.valueOf(firstDesiredLevel);
-        levelingService.setDesiredLevel(intOfFirstDesiredLevel);
-        System.out.println("Finally, do you want us to get you a mount? yes or no");
-        String answer = scanner.nextLine();
-        switch(answer){
+        System.out.println("Do you want to load an old order? yes or no");
+        String loader = scanner.nextLine();
+        switch(loader) {
             case "yes":
-                levelingService.setMount(true);
+                loadFile();
                 break;
             case "no":
-                levelingService.setMount(false);
-                break;
+                System.out.println("To start we need some details");
+                System.out.println("First off, what server are you on?");
+                String firstServer = scanner.nextLine();
+                levelingService.setPlayerServer(firstServer);
+                System.out.println("Now I need your player class.");
+                String firstClass = scanner.nextLine();
+                levelingService.setPlayerClass(firstClass);
+                System.out.println("What about your current level?");
+                String firstCurrentLevel = scanner.nextLine();
+                int intOfFirstCurrentLevel = Integer.valueOf(firstCurrentLevel);
+                levelingService.setCurrentLevel(intOfFirstCurrentLevel);
+                System.out.println("What level do you want to be?");
+                String firstDesiredLevel = scanner.nextLine();
+                int intOfFirstDesiredLevel = Integer.valueOf(firstDesiredLevel);
+                levelingService.setDesiredLevel(intOfFirstDesiredLevel);
+                System.out.println("Finally, do you want us to get you a mount? yes or no");
+                String answer = scanner.nextLine();
+                switch (answer) {
+                    case "yes":
+                        levelingService.setMount(true);
+                        break;
+                    case "no":
+                        levelingService.setMount(false);
+                        break;
+                }
+                Double cost = Math.random();
+                cost = cost * 1000;
+                String costInUSD = String.format("%.2f", cost);
+                System.out.printf("Ok, the total for your order is $%s\n", costInUSD);
+                levelingService.setCost(cost);
+                saveFile();
         }
-        Double cost = Math.random();
-        cost = cost * 1000;
-        String costInUSD = String.format("%.2f",cost);
-        System.out.printf("Ok, the total for your order is $%s\n", costInUSD);
 
         boolean keepRunning = true;
 
@@ -55,6 +64,8 @@ public class Main {
             String command = commandSystem();
             if(command == "/exit"){
                 keepRunning = false;
+            }else{
+                keepRunning = true;
             }
         }
     }
@@ -67,7 +78,7 @@ public class Main {
                     System.out.println("/change current level\n/change desired level\n/change player class\n/change player server\n ");
                     break;
                 case "/help":
-                    System.out.println("Your options are: /save /load /change /exit");
+                    System.out.println("Your options are: /show /save /load /change /exit");
                     break;
                 case "/exit":
                     System.out.println("Exiting now...");
@@ -79,6 +90,9 @@ public class Main {
                 case "/load":
                     loadFile();
                     break;
+                case "/show":
+                    levelingService.getCost();
+                    levelingService.getCurrentLevel();
                 case "/change current level":
                     System.out.println("What is your current level?");
                     String input1 = scanner.nextLine();
@@ -116,7 +130,7 @@ public class Main {
     static void saveFile()  {
         JsonSerializer serializer = new JsonSerializer();
         String json = serializer.deep(true).serialize(levelingService);
-        File f = new File("SaveGame.json");
+        File f = new File(FILE_NAME);
         try {
             FileWriter fw = new FileWriter(f);
             fw.write(json);
@@ -138,6 +152,7 @@ public class Main {
             System.out.println("File Loaded.");
         } catch (Exception e) {
             System.out.println("Couldn't load file!");
+            e.printStackTrace();
         }
     }
 }
